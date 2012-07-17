@@ -1,0 +1,15 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ScanToEvernote.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ScannerDeviceID" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="EvernoteDeveloperToken" Type="System.String" Scope="User">
+      <Value Profile="(Default)">8911f34764610e2e</Value>
+    </Setting>
+    <Setting Name="EvernoteDomain" Type="System.String" Scope="User">
+      <Value Profile="(Default)">sandbox.evernote.com</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

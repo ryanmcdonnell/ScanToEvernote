@@ -67,6 +67,18 @@ namespace ScanToEvernote
 					Properties.Settings.Default.ScannerDeviceID = deviceId;
 					Properties.Settings.Default.Save();
 				}
+
+				// Register for the scanner button event
+				//string eventId = "";
+				//DeviceManager manager = new DeviceManager();
+				//string command = String.Format("{0} {1}", Application.ExecutablePath, "/StiDevice:%1");
+				//string description = "Converts scanned documents to PDF and uploads to Evernote";
+				//string icon = String.Format("{0},0", Application.ExecutablePath);
+				//// Affects registry keys
+				//// HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Control\StillImage\Events\EVENT_ID
+				//// HKEY_LOCAL_MACHINE\SYSTEM\ControlSet002\Control\StillImage\Events\EVENT_ID
+				//// HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\StillImage\Events\EVENT_ID
+				//manager.RegisterPersistentEvent(command, "ScanToEvernote", description, icon, eventId, deviceId);
 			}
 
 			return deviceId;

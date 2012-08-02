@@ -17,9 +17,22 @@ namespace ScanToEvernote
 		[STAThread]
 		static void Main(string[] args)
 		{
-			Sti sti = new Sti();
-			IStillImage stillImage = (IStillImage)sti;
-			stillImage.RegisterLaunchApplication("ScanToEvernote", Application.ExecutablePath);
+			if (args.Length > 0 && args[0] == "regsiter")
+			{
+				try
+				{
+					Sti sti = new Sti();
+					IStillImage stillImage = (IStillImage)sti;
+					stillImage.RegisterLaunchApplication("ScanToEvernote", Application.ExecutablePath);
+					MessageBox.Show("Succesfully registered as scanner button event.", "ScanToEvernote", MessageBoxButtons.OK);
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show(String.Format("Error registering as scanner button event: {0}\n\nAre you an administrator?", ex.Message), "ScanToEvernote", MessageBoxButtons.OK);
+				}
+
+				Application.Exit();
+			}
 
 			if (String.IsNullOrEmpty(Properties.Settings.Default.EvernoteDeveloperToken))
 				Properties.Settings.Default.EvernoteDeveloperToken = Microsoft.VisualBasic.Interaction.InputBox("What is your Evernote API Token?", "ScanToEvernote", "");

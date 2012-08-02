@@ -37,25 +37,13 @@ namespace ScanToEvernote.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("8911f34764610e2e")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string EvernoteDeveloperToken {
             get {
                 return ((string)(this["EvernoteDeveloperToken"]));
             }
             set {
                 this["EvernoteDeveloperToken"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("sandbox.evernote.com")]
-        public string EvernoteDomain {
-            get {
-                return ((string)(this["EvernoteDomain"]));
-            }
-            set {
-                this["EvernoteDomain"] = value;
             }
         }
     }

@@ -6,9 +6,16 @@ using WIA;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace ScanToEvernote
 {
+	enum ScanSource
+	{
+		DocumentFeeder = 1,
+		Flatbed = 2,
+	}
+
 	class Scanner
 	{
 		#region WIA constants
@@ -19,9 +26,10 @@ namespace ScanToEvernote
 		public const string WIA_FORMAT_JPEG = "{B96B3CAE-0728-11D3-9D7B-0000F81EF32E}";
 
 		public const int FEED_READY = 0x00000001;
+		public const int FLATBED_READY = 0x00000002;
 
-		public const int BASE_VAL_WIA_ERROR = 0x80210000;
-		public const int WIA_ERROR_PAPER_EMPTY = BASE_VAL_WIA_ERROR + 3;
+		public const uint BASE_VAL_WIA_ERROR = 0x80210000;
+		public const uint WIA_ERROR_PAPER_EMPTY = BASE_VAL_WIA_ERROR + 3;
 		#endregion
 
 		private string _deviceId;
@@ -51,7 +59,7 @@ namespace ScanToEvernote
 			if (String.IsNullOrEmpty(deviceId))
 			{
 				// Select a scanner
-				CommonDialog wiaDiag = new CommonDialog();
+				WIA.CommonDialog wiaDiag = new WIA.CommonDialog();
 				Device d = wiaDiag.ShowSelectDevice(WiaDeviceType.ScannerDeviceType, true, false);
 				if (d != null)
 				{
@@ -76,15 +84,33 @@ namespace ScanToEvernote
 			SetDeviceItemProperty(ref item, 6152, (int)(dpi * height)); // scan height
 			SetDeviceItemProperty(ref item, 4104, 8); // bit depth
 
-			int deviceHandling = true ? 1 : 2; // 1 for ADF, 2 for flatbed
-			SetDeviceProperty(ref _device, 3088, deviceHandling);
-
 			// TODO: Detect if the ADF is loaded, if not use the flatbed
+
+			List<Image> images = GetPagesFromScanner(ScanSource.DocumentFeeder, item);
+			if (images.Count == 0)
+			{
+				// Try from flatbed
+				DialogResult dialogResult;
+				do
+				{
+					List<Image> singlePage = GetPagesFromScanner(ScanSource.Flatbed, item);
+					images.AddRange(singlePage);
+					dialogResult = MessageBox.Show("Scan another page?", "ScanToEvernote", MessageBoxButtons.YesNo);
+				}
+				while (dialogResult == DialogResult.Yes);
+			}
+
+			return images;
+		}
+
+		private List<Image> GetPagesFromScanner(ScanSource source, Item item)
+		{
+			SetDeviceProperty(ref _device, 3088, (int)source);
 
 			List<Image> images = new List<Image>();
 
 			int handlingStatus = GetDeviceProperty(ref _device, WIA_DPS_DOCUMENT_HANDLING_STATUS);
-			if (handlingStatus == FEED_READY)
+			if ((source == ScanSource.DocumentFeeder && handlingStatus == FEED_READY) || (source == ScanSource.Flatbed && handlingStatus == FLATBED_READY))
 			{
 				do
 				{
@@ -95,7 +121,7 @@ namespace ScanToEvernote
 					}
 					catch (COMException ex)
 					{
-						if (ex.ErrorCode == WIA_ERROR_PAPER_EMPTY)
+						if ((uint)ex.ErrorCode == WIA_ERROR_PAPER_EMPTY)
 							break;
 						else
 							throw;
@@ -107,9 +133,8 @@ namespace ScanToEvernote
 						images.Add(image);
 					}
 				}
-				while (true);
+				while (source == ScanSource.DocumentFeeder);
 			}
-
 			return images;
 		}
 

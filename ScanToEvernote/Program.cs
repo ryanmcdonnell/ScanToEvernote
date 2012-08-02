@@ -16,8 +16,12 @@ namespace ScanToEvernote
 		static void Main()
 		{
 			Scanner scanner = new Scanner();
-			List<Image> images = scanner.ScanPages();
-			images.SaveImagesAsNewNote();
+			byte[] document = scanner.ScanPages().ToPdf();
+			if (document != null)
+			{
+				EvernoteClient en = new EvernoteClient();
+				var note = en.NewNote(document, "application/pdf");
+			}
 		}
 	}
 }

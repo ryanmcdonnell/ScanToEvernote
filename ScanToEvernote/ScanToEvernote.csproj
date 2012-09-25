@@ -67,8 +67,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Evernote.Core.0.5.0\lib\net40\Evernote.dll</HintPath>
     </Reference>
-    <Reference Include="itextsharp">
-      <HintPath>..\packages\iTextSharp.5.2.0\lib\itextsharp.dll</HintPath>
+    <Reference Include="itextsharp, Version=5.3.2.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\itextsharp.5.3.2\lib\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />

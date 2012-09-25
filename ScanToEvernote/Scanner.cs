@@ -107,7 +107,7 @@ namespace ScanToEvernote
 				{
 					List<Image> singlePage = GetPagesFromScanner(ScanSource.Flatbed, item);
 					images.AddRange(singlePage);
-					dialogResult = MessageBox.Show("Scan another page?", "ScanToEvernote", MessageBoxButtons.YesNo);
+                    dialogResult = TopMostMessageBox.Show("Scan another page?", "ScanToEvernote", MessageBoxButtons.YesNo);
 				}
 				while (dialogResult == DialogResult.Yes);
 			}
@@ -141,6 +141,8 @@ namespace ScanToEvernote
 
 					if (wiaImage != null)
 					{
+
+                        System.Diagnostics.Trace.WriteLine(String.Format("Image is {0} x {1} pixels", (float)wiaImage.Width / 150, (float)wiaImage.Height / 150));
 						Image image = ConvertToImage(wiaImage);
 						images.Add(image);
 					}

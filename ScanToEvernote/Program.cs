@@ -26,11 +26,11 @@ namespace ScanToEvernote
 					Sti sti = new Sti();
 					IStillImage stillImage = (IStillImage)sti;
 					stillImage.RegisterLaunchApplication("ScanToEvernote", Application.ExecutablePath);
-					MessageBox.Show("Succesfully registered as scanner button event.", "ScanToEvernote", MessageBoxButtons.OK);
+                    TopMostMessageBox.Show("Succesfully registered as scanner button event.", "ScanToEvernote", MessageBoxButtons.OK);
 				}
 				catch (Exception ex)
 				{
-					MessageBox.Show(String.Format("Error registering as scanner button event: {0}\n\nAre you an administrator?", ex.Message), "ScanToEvernote", MessageBoxButtons.OK);
+                    TopMostMessageBox.Show(String.Format("Error registering as scanner button event: {0}\n\nAre you an administrator?", ex.Message), "ScanToEvernote", MessageBoxButtons.OK);
 				}
 
 				return;
@@ -82,11 +82,11 @@ namespace ScanToEvernote
 			}
 			catch (Evernote.EDAM.Error.EDAMUserException ex)
 			{
-				MessageBox.Show(String.Format("Evernote error: {0}\n\nIs your developer API token invalid?", ex.ErrorCode), "ScanToEvernote", MessageBoxButtons.OK);
+                TopMostMessageBox.Show(String.Format("Evernote error: {0}\n\nIs your developer API token invalid?", ex.ErrorCode), "ScanToEvernote", MessageBoxButtons.OK);
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show(ex.Message, "ScanToEvernote", MessageBoxButtons.OK);
+                TopMostMessageBox.Show(ex.Message, "ScanToEvernote", MessageBoxButtons.OK);
 			}
 
 			Application.Exit();

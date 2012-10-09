@@ -19,28 +19,42 @@ namespace ScanToEvernote
 		[STAThread]
 		static void Main(string[] args)
 		{
-			if (args.Length > 0 && args[0] == "register")
+			if (args.Length > 0)
 			{
-				try
-				{
-					Sti sti = new Sti();
-					IStillImage stillImage = (IStillImage)sti;
-					stillImage.RegisterLaunchApplication("ScanToEvernote", Application.ExecutablePath);
-                    TopMostMessageBox.Show("Succesfully registered as scanner button event.", "ScanToEvernote", MessageBoxButtons.OK);
-				}
-				catch (Exception ex)
-				{
-                    TopMostMessageBox.Show(String.Format("Error registering as scanner button event: {0}\n\nAre you an administrator?", ex.Message), "ScanToEvernote", MessageBoxButtons.OK);
-				}
+                if(args[0] == "register")
+                {
+				    try
+				    {
+					    Sti sti = new Sti();
+					    IStillImage stillImage = (IStillImage)sti;
+					    stillImage.RegisterLaunchApplication("ScanToEvernote", Application.ExecutablePath);
+                        TopMostMessageBox.Show("Succesfully registered as scanner button event.", "ScanToEvernote", MessageBoxButtons.OK);
+				    }
+				    catch (Exception ex)
+				    {
+                        TopMostMessageBox.Show(String.Format("Error registering as scanner button event: {0}\n\nAre you an administrator?", ex.Message), "ScanToEvernote", MessageBoxButtons.OK);
+				    }
 
-				return;
+				    return;
+                }
+
+                if (args[0] == "clearscanner")
+                {
+                    Properties.Settings.Default.ScannerDeviceID = null;
+                    Properties.Settings.Default.Save();
+                    MessageBox.Show("Scanner configuration cleared.");
+                    return;
+                }
 			}
-
-			if (String.IsNullOrEmpty(Properties.Settings.Default.EvernoteDeveloperToken))
-				Properties.Settings.Default.EvernoteDeveloperToken = Microsoft.VisualBasic.Interaction.InputBox("What is your Evernote API Token?", "ScanToEvernote", "");
 
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
+
+            if (String.IsNullOrEmpty(Properties.Settings.Default.EvernoteDeveloperToken))
+            {
+                Properties.Settings.Default.EvernoteDeveloperToken = Microsoft.VisualBasic.Interaction.InputBox("What is your Evernote API Token?", "ScanToEvernote", "");
+                Properties.Settings.Default.Save();
+            }
 
 			RunBackgroundWorker();
 
